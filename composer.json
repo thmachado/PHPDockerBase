@@ -1,0 +1,11 @@
+{
+    "name": "root/app",
+    "description": "CRUD",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Root\\App\\": "src/"
+        }
+    },
+    "require": {}
+}
