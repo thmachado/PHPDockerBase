@@ -10,15 +10,19 @@ $databaseFile = __DIR__ . '/../users.sqlite';
 
 $PDO = DB::getInstance($databaseFile);
 
+session_start();
+
 $router = new Router();
 
-$router->register('/', function () {
+$router->get('/', function () {
     echo 'Hello world!';
 });
 
-$router->register('/users', [UsersController::class, 'index']);
-$router->register('/users/create', [UsersController::class, 'create']);
-$router->register('/users/store', [UsersController::class, 'store']);
+$router->get('/users', [UsersController::class, 'index']);
+$router->get('/users/create', [UsersController::class, 'create']);
+$router->get('/users/edit', [UsersController::class, 'edit']);
+$router->get('/users/delete', [UsersController::class, 'delete']);
+$router->post('/users/store', [UsersController::class, 'store']);
+$router->post('/users/update', [UsersController::class, 'update']);
 
-
-$router->resolve($_SERVER['REQUEST_URI'], $PDO);
+$router->resolve($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD'], $PDO);

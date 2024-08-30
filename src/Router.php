@@ -6,15 +6,26 @@ class Router
 {
     private array $routes;
 
-    public function register(string $route, array | callable $action): void
+    public function register(string $method, string $route, array|callable $action): self
     {
-        $this->routes[$route] = $action;
+        $this->routes[$route][$method] = $action;
+        return $this;
     }
 
-    public function resolve(string $requestUri, \PDO $pdo)
+    public function get(string $route, array|callable $action): self
+    {
+        return $this->register('GET', $route, $action);
+    }
+
+    public function post(string $route, array|callable $action): self
+    {
+        return $this->register('POST', $route, $action);
+    }
+
+    public function resolve(string $requestUri, string $requestMethod, \PDO $pdo)
     {
         $route = explode('?', $requestUri)[0];
-        $action = $this->routes[$route] ?? null;
+        $action = $this->routes[$route][$requestMethod] ?? null;
 
         if (!$action) {
             http_response_code(404);

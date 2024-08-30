@@ -13,12 +13,34 @@ class User
 
     public function findAll(): array
     {
-        $stmt = $this->pdo->prepare("SELECT firstname, lastname, email FROM users ORDER BY firstname, lastname ASC");
+        $stmt = $this->pdo->prepare("SELECT rowid, firstname, lastname, email FROM users ORDER BY firstname, lastname ASC");
         if ($stmt->execute()) {
             return $stmt->fetchAll(\PDO::FETCH_OBJ);
         }
 
         return [];
+    }
+
+    public function find(int $userid)
+    {
+        $stmt = $this->pdo->prepare("SELECT rowid, firstname, lastname, email FROM users WHERE rowid = :userid");
+        $stmt->bindValue(':userid', $userid, \PDO::PARAM_INT);
+        if ($stmt->execute()) {
+            return $stmt->fetch(\PDO::FETCH_OBJ);
+        }
+
+        return false;
+    }
+
+    public function delete(int $userid): bool
+    {
+        $stmt = $this->pdo->prepare("DELETE FROM users WHERE rowid = :userid");
+        $stmt->bindValue(':userid', $userid, \PDO::PARAM_INT);
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        return false;
     }
 
     public function create(string $firstname, string $lastname, string $email, string $password)
@@ -31,7 +53,21 @@ class User
         $stmt->bindValue(':password', $password, \PDO::PARAM_STR);
 
         if ($stmt->execute()) {
-            return $this->pdo->lastInsertId();
+            return true;
+        }
+
+        return false;
+    }
+
+    public function update(int $userid, string $firstname, string $lastname)
+    {
+        $stmt = $this->pdo->prepare("UPDATE users SET firstname = :firstname, lastname = :lastname WHERE rowid = :userid");
+        $stmt->bindValue(':firstname', $firstname, \PDO::PARAM_STR);
+        $stmt->bindValue(':lastname', $lastname, \PDO::PARAM_STR);
+        $stmt->bindValue(':userid', $userid, \PDO::PARAM_INT);
+
+        if ($stmt->execute()) {
+            return true;
         }
 
         return false;
