@@ -1,17 +1,12 @@
 <?php
 
-use Root\App\Controllers\ProductsController;
-use Root\App\Controllers\UsersController;
-use Root\App\DB;
-use Root\App\Router;
+use Root\App\Controllers\{ProductsController, UsersController};
+use Root\App\{DB, Router};
 
 require_once __DIR__ . '/../vendor/autoload.php';
-
 $databaseFile = __DIR__ . '/../database.sqlite';
 
 $PDO = DB::getInstance($databaseFile);
-
-session_start();
 
 $router = new Router();
 
