@@ -1,12 +1,13 @@
 <?php
 
+use Root\App\Controllers\ProductsController;
 use Root\App\Controllers\UsersController;
 use Root\App\DB;
 use Root\App\Router;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$databaseFile = __DIR__ . '/../users.sqlite';
+$databaseFile = __DIR__ . '/../database.sqlite';
 
 $PDO = DB::getInstance($databaseFile);
 
@@ -25,6 +26,7 @@ $router->get('/users/delete', [UsersController::class, 'delete']);
 $router->post('/users/store', [UsersController::class, 'store']);
 $router->post('/users/update', [UsersController::class, 'update']);
 
-$router->get('/dashboard', [UsersController::class, 'index']);
+$router->get('/api/products', [ProductsController::class, 'index']);
+$router->post('/api/products', [ProductsController::class, 'store']);
 
 $router->resolve($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD'], $PDO);

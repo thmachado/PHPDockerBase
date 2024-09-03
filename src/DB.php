@@ -26,6 +26,15 @@ class DB
                 role INTEGER,
                 timecreated TEXT
             )');
+
+            self::$instance->exec('CREATE TABLE IF NOT EXISTS products (
+                name TEXT,
+                description TEXT,
+                category TEXT,
+                quantity INTEGER,
+                price INTEGER,
+                timecreated TEXT
+            )');
         } catch (PDOException $e) {
             throw new PDOException("Error Processing Request {$e->getMessage()}");
         }

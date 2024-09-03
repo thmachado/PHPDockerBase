@@ -9,15 +9,15 @@ class View
     public function __construct(protected string $view, protected array $params = [])
     {
         $file = self::FILE_PATH . $this->view . '.php';
-        if (file_exists($file) === null) {
+        if (file_exists($file) === false) {
             http_response_code(404);
         }
 
         include $file;
     }
 
-    public static function make(string $view, array $params)
+    public static function make(string $view, array $params): self
     {
-        new self($view, $params);
+        return new self($view, $params);
     }
 }

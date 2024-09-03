@@ -42,6 +42,12 @@ RUN --mount=type=bind,source=composer.json,target=composer.json \
 FROM php:8.2-apache as final
 RUN a2enmod rewrite
 
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    && pecl install redis \
+    && docker-php-ext-enable redis \
+    && rm -rf /var/lib/apt/lists/*
+
 # Your PHP application may require additional PHP extensions to be installed
 # manually. For detailed instructions for installing extensions can be found, see
 # https://github.com/docker-library/docs/tree/master/php#how-to-install-more-php-extensions
