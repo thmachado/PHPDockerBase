@@ -16,8 +16,8 @@ if ($users) {
             <td>{$user->email}</td>
             <td>User</td>
             <td>
-                <a href='/users/edit?id={$user->id}'>Edit</a>
-                <a href='/users/delete?id={$user->id}'>Delete</a>
+                <a href='/users/edit?id={$user->rowid}'>Edit</a>
+                <a href='/users/delete?id={$user->rowid}'>Delete</a>
             </td>
         </tr>
         ";

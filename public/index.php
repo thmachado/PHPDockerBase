@@ -25,4 +25,6 @@ $router->get('/users/delete', [UsersController::class, 'delete']);
 $router->post('/users/store', [UsersController::class, 'store']);
 $router->post('/users/update', [UsersController::class, 'update']);
 
+$router->get('/dashboard', [UsersController::class, 'index']);
+
 $router->resolve($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD'], $PDO);

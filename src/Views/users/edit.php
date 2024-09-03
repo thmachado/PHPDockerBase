@@ -10,7 +10,7 @@
 <body>
     <h1>Users</h1>
     <form method="POST" action="/users/update">
-        <input type="hidden" name="userid" value="<?php echo $this->params['user']->id; ?>" required />
+        <input type="hidden" name="userid" value="<?php echo $this->params['user']->rowid; ?>" required />
         <input type="text" name="firstname" placeholder="Firstname"
             value="<?php echo $this->params['user']->firstname; ?>" required />
         <input type="text" name="lastname" placeholder="Lastname" value="<?php echo $this->params['user']->lastname; ?>"

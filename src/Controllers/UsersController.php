@@ -55,12 +55,16 @@ class UsersController
 
     public function store()
     {
-        $firstname = $this->validateString(INPUT_POST, 'firstname', FILTER_SANITIZE_SPECIAL_CHARS);
-        $lastname = $this->validateString(INPUT_POST, 'lastname', FILTER_SANITIZE_SPECIAL_CHARS);
-        $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-        $password = $this->validateString(INPUT_POST, 'password', FILTER_SANITIZE_SPECIAL_CHARS);
+        $firstname = $this->validateData(INPUT_POST, 'firstname', FILTER_SANITIZE_SPECIAL_CHARS);
+        $lastname = $this->validateData(INPUT_POST, 'lastname', FILTER_SANITIZE_SPECIAL_CHARS);
+        $email = $this->validateData(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+        $password = $this->validateData(INPUT_POST, 'password', FILTER_SANITIZE_SPECIAL_CHARS);
         $passwordPepper = hash_hmac('sha256', $password, 'crud');
         $passwordHash = password_hash($passwordPepper, PASSWORD_ARGON2ID);
+
+        if ($this->userModel->validate($email) === false) {
+            return $this->response("/users", 404, "You need to use another email");
+        }
 
         if ($this->userModel->create($firstname, $lastname, $email, $passwordHash) === false) {
             return $this->response("/users", 404, "You can't create it");
@@ -72,8 +76,8 @@ class UsersController
     public function update()
     {
         $userid = filter_input(INPUT_POST, 'userid', FILTER_VALIDATE_INT);
-        $firstname = $this->validateString(INPUT_POST, 'firstname', FILTER_SANITIZE_SPECIAL_CHARS);
-        $lastname = $this->validateString(INPUT_POST, 'lastname', FILTER_SANITIZE_SPECIAL_CHARS);
+        $firstname = $this->validateData(INPUT_POST, 'firstname', FILTER_SANITIZE_SPECIAL_CHARS);
+        $lastname = $this->validateData(INPUT_POST, 'lastname', FILTER_SANITIZE_SPECIAL_CHARS);
 
         if ($this->userModel->update($userid, $firstname, $lastname) === false) {
             return $this->response("/users", 404, "You can't update it");
